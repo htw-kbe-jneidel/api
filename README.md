@@ -1,6 +1,6 @@
 # API
 
-Translates http call into message queue requests.
+Translates http calls into message queue requests.
 
 ## Routes
 
