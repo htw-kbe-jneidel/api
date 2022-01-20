@@ -1,0 +1,258 @@
+---
+openapi: 3.0.0
+info:
+  title: htw-kbe-jneidel/api
+  description: https://github.com/htw-kbe-jneidel/api
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/jneidel/htw-kbe-jneidel_api/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:8001/
+  description: SwaggerHub API Auto Mocking
+paths:
+  /product:
+    get:
+      summary: Get a specific product.
+      parameters:
+      - name: productId
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /storeLocation:
+    get:
+      summary: Get a specific product.
+      parameters:
+      - name: storeLocationId
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /productQuantityAtLocation:
+    get:
+      summary: Get the quantity of products available at a given store location.
+      parameters:
+      - name: storeLocationId
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: productId
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /calculateDistance:
+    post:
+      summary: Calculate walking distance.
+      description: Calculate the walking distance between two coordinates, belonging to two separate store locations.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              example:
+              - 13.52575,52.46319
+              - 13.50961,52.45775
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "400":
+          description: invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /caculateVat:
+    post:
+      summary: Calculate vat.
+      description: Calculate the VAT for the given price and product category.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/caculateVat_body'
+        required: true
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+        "400":
+          description: invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /products:
+    get:
+      summary: Get all products.
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /storeLocations:
+    get:
+      summary: Get all store locations.
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StoreLocation'
+  /productQuantitiesAtLocations:
+    get:
+      summary: Get all product location combinations.
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_4'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: boolean
+        errorMsg:
+          type: string
+    Product:
+      type: object
+      properties:
+        productid:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        image:
+          type: string
+        price:
+          type: number
+    StoreLocation:
+      type: object
+      properties:
+        storeLocationId:
+          type: string
+        name:
+          type: string
+        coordinates:
+          type: string
+    inline_response_200:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        error:
+          type: boolean
+    inline_response_200_1:
+      type: object
+      properties:
+        amount:
+          type: number
+        error:
+          type: boolean
+    inline_response_200_2:
+      type: object
+      properties:
+        walkingDistanceInMinutes:
+          type: number
+        walkingDistanceInKilometers:
+          type: number
+        osmLink:
+          type: string
+        error:
+          type: boolean
+    caculateVat_body:
+      type: object
+      properties:
+        price:
+          type: number
+        category:
+          type: string
+          example: lebensmittel
+    inline_response_200_3:
+      type: object
+      properties:
+        vat:
+          type: number
+        error:
+          type: boolean
+    inline_response_200_4:
+      type: object
+      properties:
+        productId:
+          type: string
+        storeLocationId:
+          type: string
+        amount:
+          type: string
