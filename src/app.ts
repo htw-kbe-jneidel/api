@@ -17,6 +17,7 @@ app.use( "/", routes.storeLocationRoute );
 app.use( "/", routes.productQuantityAtLocationRoute );
 app.use( "/", routes.calculateDistanceRoute );
 app.use( "/", routes.calculateVatRoute );
+app.use( "/", routes.initiateCsvExport );
 
 app.use( "/", ( req, res: any ) => {
   return res.status( 404 ).json( { error: true, errorMsg: "Not found" } );
