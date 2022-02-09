@@ -11,6 +11,10 @@ app.use( async ( req: any, res, next: any ) => {
   next();
 } );
 
+app.use( "/", ( req, res, next ) => {
+  console.log( req.url );
+  return next();
+} )
 import * as routes from "./route";
 app.use( "/", routes.productRoute );
 app.use( "/", routes.storeLocationRoute );
